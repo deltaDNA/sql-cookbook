@@ -1,3 +1,4 @@
+--Get number of active users per hour based on the local timestamp.
 with firstValues as (
 	select userId
 		, eventTimestamp as startTs

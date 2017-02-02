@@ -1,14 +1,26 @@
-with data as (select userId, eventTimestamp,
-first_value(UIName ignore nulls) over (partition by userId order by eventTimestamp) as lastValue --get the first ever value backwards
-from events
-where sessionId is not null --exclude non-gameplay events such as the sending of a notification
-)
-,aggregates as (select userId, max(eventTimestamp)::date as last_seen_date, max (lastValue) as lastUiName
-from data
-group by userId
-)
-select lastUiName,
-count(case when last_seen_date> current_date-7 then 1 else null end) currentPlayers,
-count(case when last_seen_date< current_date-7 then 1 else null end) lapsedPlayers
-from aggregates
-group by lastUiName
+--Find the last UiName per user and compare these for current players and players that haven't been playing for a while
+WITH DATA AS
+  (SELECT userId,
+          eventTimestamp,
+          first_value(UIName
+                      IGNORE nulls) over (partition BY userId
+                                          ORDER BY eventTimestamp) AS lastValue --get the first ever value backwards
+FROM EVENTS
+   WHERE sessionId IS NOT NULL --exclude non-gameplay events such as the sending of a notification
+) ,aggregates AS
+  (SELECT userId,
+          max(eventTimestamp)::date AS last_seen_date,
+          MAX (lastValue) AS lastUiName
+   FROM DATA
+   GROUP BY userId)
+SELECT lastUiName,
+       count(CASE
+                 WHEN last_seen_date> CURRENT_DATE-7 THEN 1
+                 ELSE NULL
+             END) currentPlayers,
+       count(CASE
+                 WHEN last_seen_date< CURRENT_DATE-7 THEN 1
+                 ELSE NULL
+             END) lapsedPlayers
+FROM aggregates
+GROUP BY lastUiName
