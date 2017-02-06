@@ -45,7 +45,7 @@ Vertica is a column store database that is especially good at analytics. Obvious
 There are a lot of columns, hence why it's also called a wide table, for the way it is stored this is not an issue since only rows that have a value in that column are stored. Naturally there will be quite a few empty values in this table.
 Due to all events being stored in this one table there will be a lot of rows when represented as a table.
 
-When querying the data it makes a big difference how many columns are within scope. The columns you are not interested in should not be queried. This makes `select count(*) from events` faster than `select * from events limit 1` When you select a row with all columns anyway you'll quickly find that it is hard to find the values you are actually interested since you will keep having to scroll horizontally.
+When querying the data it makes a big difference how many columns are within scope. The columns you are not interested in should not be queried. This makes `select count(*) from events` usually faster than `select * from events limit 1` When you select a row with all columns anyway you'll quickly find that it is hard to find the values you are actually interested since you will keep having to scroll horizontally.
 
 ## Tips
 Use analytic functions instead of joins
