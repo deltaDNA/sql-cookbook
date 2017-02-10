@@ -3,6 +3,7 @@
 --then we add counters for all mission end events and mission start events.
 --The sum of failed completed and abandoned should add up to be equal to the number of started
 --this can be visualised by stacking them within data mining and getting a line of mission starts
+--Here we assume missionID is a numeric value sent in as a string and the first mission is '0'
 WITH starters AS
   (SELECT userId
    FROM events
