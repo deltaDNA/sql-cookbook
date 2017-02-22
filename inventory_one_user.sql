@@ -1,5 +1,4 @@
 --this query can be used to look at the transactions a user made over time, in the currentlyInInventory you find the amount of the item the user currently has.
---keep in mind that
 SELECT CASE
            WHEN sessionId IS NOT NULL THEN 'client'
            ELSE 'server'
