@@ -1,4 +1,5 @@
---In this query we create a time slice and then join all daily activity back on the event to generate a moving window.
+--In this query we create a time slice by extrapolating the days between two fixed dates
+--this is then joined onto the user activity of x days in the past. And next we count the unique number of users .
 WITH dates AS
   (SELECT DAY::date
    FROM
