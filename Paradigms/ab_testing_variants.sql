@@ -7,16 +7,20 @@ with data as (
 		last_value(responseEngagementName ignore nulls) over user_window_chronological as lastEngagementName,
 		last_value(responseVariantName ignore nulls) over user_window_chronological as lastVariantName
 	from events
-	where eventName = 'transaction' or responseEngagementName = 'X'-- replace x with name of engagement
+	where (eventName = 'transaction' and revenueValidated in (0,1)) or responseEngagementName = 'X'-- replace x with name of engagement
 	WINDOW user_window_chronological as (partition by userId order by eventTimestamp)
 )
 select  
 	eventDate, 
 	lastVariantName, 
-	sum(convertedProductAmount)as rv, 
-	count(*) as transactions
+	(sum(convertedProductAmount)/100)::float as revenueInUSD, 
+        sum(sum(convertedProductAmount)/100) over (partition by lastVariantName order by eventDate)::float as cumulativeRevenueInUSD,
+	count(*) as transactions,
+        count(distinct userId) as convertedUserCount
 from data 
 where lastEngagementName is not null 
+and eventDate <= current_date
 and eventName = 'transaction'
-group by eventDate, lastVariantName
-order by eventDate
+group by eventDate, lastVariantName, lastEngagementName
+order by eventDate, lastEngagementName
+
