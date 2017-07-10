@@ -14,6 +14,7 @@ select
 	gaUserStartDate as 'install date',
 	round(IapRevenue/userCount,4)::float as 'IAP LTV',
 	round(PredictedAdRevenue/userCount,4)::float as 'Predicted Ad LTV',
-	round((PredictedAdRevenue+IapRevenue)/userCount,4)::float as 'total LTV'
+	round((PredictedAdRevenue+IapRevenue)/userCount,4)::float as 'total LTV',
+	userCount as 'Number of players'
 from data
 order by gaUserStartDate
