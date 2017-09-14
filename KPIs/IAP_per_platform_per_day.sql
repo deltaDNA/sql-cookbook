@@ -29,7 +29,7 @@ SELECT daynumber,
               AND eventname = 'transaction' 
               AND revenuevalidated IN ( 0, 1 ) 
               AND convertedproductamount > 0 THEN convertedproductamount END) AS "iOS Revenue", 
-   COUNT(DISTINCT(CASE WHEN platform LIKE 'ANDROID%' THEN userid END)) AS "Andorid Users", 
+   COUNT(DISTINCT(CASE WHEN platform LIKE 'ANDROID%' THEN userid END)) AS "Android Users", 
    COUNT(DISTINCT(CASE WHEN platform LIKE 'ANDROID%' 
                         AND eventname = 'transaction' 
                         AND revenuevalidated IN ( 0, 1 ) 
