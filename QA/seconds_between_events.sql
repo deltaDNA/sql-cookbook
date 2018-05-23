@@ -18,7 +18,10 @@ WITH first_day_events AS
    WHERE eventTimestamp - startTimeStamp<=interval '5 minute'-- check first 5 minutes
 )
 SELECT gaUserStartDate AS 'Date',
-       avg(msSinceLastEvent/1000)AS 'Average number of seconds between events'
+	avg(msSinceLastEvent/1000)AS 'Average number of seconds between events'
+	count(*) as 'Number of events',
+	count(distinct userId) as 'Number of users'
 FROM firstMinutes
 GROUP BY 1
 ORDER BY 1 DESC
+
