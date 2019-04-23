@@ -82,22 +82,49 @@ If you are able to define a subset of items in the column or partition definitio
 So only selecting the columns you are interested in will mean that instead of retrieving the data for all columns only the relevant columns are touched. Try running: 
 select eventTimestamp, userid, eventName from events order by 1
 Instead of:
+```
 select * from events order by eventTimestamp
-
+```
 In the case of the events table it helps to limit the number of dates your query is looking at.
+```
 Where eventDate = current_date -10
-
+```
 Or if you can limit the number of events to look at:
+```
 Where eventName = ‘gameStarted’
-
+````
 Or if you define the users you are interested in:
+```
 Where userId in (‘ThisUser’, ‘AnotherUser’)
-
+```
 Alternatively if you can sample the data based on the userId so you can do a simple operation that tells you if the user should be included in your search, like only look at users starting with an ‘a’
+```
 where left(userID, 1) = 'a'
+```
 
 Another, more random way to query a subset of users is to run a hash function on the userId which returns a number and then running a modulo on the outcome of that, which gives you a pseudo random number and get only the items where this returns 0, this gives you 1/100th of all users and makes the query nearly 100x as fast. Using this when debugging a complicated query is recommended. (protip: try changing the 100 for 10000 for a smaller subset and changing the 0 for a different number to test with a different sample!)
+```
 where mod(hash(userId), 100)=0
+```
+
+**Spooling**
 
 The next step in running any query is returning the results. This is depending on bandwidth and might cause performance issues on a slow internet connection. Returning 100 rows will not be a problem and most db tools like dbeaver and data mining will limit the number of returned rows to something below 1000. When running queries from R and Python this is an easy pitfall, especially when running on your laptop via a mobile data connection in the park.
+
+**Filtering in a query**
+
+Filter as early as possible in a query to make the next step quicker.
+So instead of:
+```
+With data as (select eventName, userid, platform from events)
+Select * from data
+Where eventName = ‘gameStarted’
+```
+Do
+
+```
+With data as (select eventName, userid, platform from events
+where eventName = ‘gameStarted’)
+Select * from data
+```
 
