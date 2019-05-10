@@ -5,7 +5,7 @@ select  event_date,
         user_id, 
         sum(revenue) as revenue,
         sum(sum(revenue)) over (partition by user_id order by event_date) as cumulative_revenue
-from fact_user_sesssions_day
+from fact_user_sessions_day
 group by event_date, user_id
 )
 select  event_date,
