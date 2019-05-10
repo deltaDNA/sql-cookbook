@@ -16,3 +16,4 @@ select  event_date,
         count(distinct case when cumulative_revenue>0 then user_id end)/count(distinct user_id) as percentage_spenders_active
 from  dailyAggregates   
 group by 1
+order by 1 desc
