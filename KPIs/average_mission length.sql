@@ -19,9 +19,10 @@ WITH missions AS
           sum(msSinceLastEvent) over (partition BY missionGroup, userId
                                       ORDER BY eventTimestamp)AS MissionCompletedTime
    FROM missions
-   WHERE eventName = 'missionCompleted')
+)
 SELECT missionID,
        avg(missionCompletedTime)/1000 AS AverageMissionTimeInSeconds
 FROM missionCompletedEvents
+where eventName = 'missionCompleted'
 GROUP BY missionID
 ORDER BY cast(missionId AS NUMERIC)
