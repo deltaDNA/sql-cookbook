@@ -17,7 +17,6 @@ WITH transactions AS (
         eventname IN ( 'transaction', 'newPlayer', 'gameStarted' ) 
         AND gauserstartdate > (SELECT Min(eventtimestamp) FROM   EVENTS)
 ) 
-
 SELECT 
     userid AS userId, 
     firsteventtimestamp AS userFirstSeen, 

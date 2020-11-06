@@ -11,7 +11,23 @@ WITH DATA AS
    FROM EVENTS
    GROUP BY sessionId)
 SELECT sessionId,
-       (sessionLength|| ' ms')::interval AS sessionLength,
-       (compensatedSessionLength|| ' ms')::interval AS compensatedSessionLength,
+  case -- format time as an interval
+		when sessionTime < 0 then '-' || TO_CHAR(TRUNC(ABS(sessionLength)/ 3600000), 'FM9900') || ':' || 
+    TO_CHAR(TRUNC(mod(ABS(sessionLength), 3600000)/ 60000), 'FM00') || ':' || 
+    TO_CHAR(TRUNC(mod(ABS(sessionLength), 60000)/ 1000), 'FM00') || '.' || 
+    TO_CHAR(mod(ABS(sessionLength), 1000), 'FM000')
+		else TO_CHAR(TRUNC(sessionLength/ 3600000), 'FM9900') || ':' || 
+    TO_CHAR(TRUNC(mod(sessionLength, 3600000)/ 60000), 'FM00') || ':' || 
+    TO_CHAR(TRUNC(mod(sessionLength, 60000)/ 1000), 'FM00') || '.' || 
+    TO_CHAR(mod(sessionLength, 1000), 'FM000') end AS sessionLength,
+  case
+    when compensatedSessionLength < 0 then '-' || TO_CHAR(TRUNC(ABS(compensatedSessionLength)/ 3600000), 'FM9900') || ':' || 
+    TO_CHAR(TRUNC(mod(ABS(compensatedSessionLength), 3600000)/ 60000), 'FM00') || ':' || 
+    TO_CHAR(TRUNC(mod(ABS(compensatedSessionLength), 60000)/ 1000), 'FM00') || '.' || 
+    TO_CHAR(mod(ABS(compensatedSessionLength), 1000), 'FM000')
+		else TO_CHAR(TRUNC(compensatedSessionLength/ 3600000), 'FM9900') || ':' || 
+    TO_CHAR(TRUNC(mod(compensatedSessionLength, 3600000)/ 60000), 'FM00') || ':' || 
+    TO_CHAR(TRUNC(mod(compensatedSessionLength, 60000)/ 1000), 'FM00') || '.' || 
+    TO_CHAR(mod(compensatedSessionLength, 1000), 'FM000') end AS compensatedSessionLength,
        eventCount
 FROM DATA

@@ -7,7 +7,6 @@ WITH userPurchases AS (
     FROM fact_user_sessions_day
     WHERE revenue > 0
 )
-
 SELECT 
     daysSinceInstall AS daysUntilFirstPurchase, 
     COUNT(DISTINCT user_id) AS userCount

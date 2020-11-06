@@ -5,23 +5,21 @@ WITH firstValues AS
   (SELECT userId,
           min(eventTimestamp)startTs,
           min(timezoneOffset)tzo
-   FROM EVENTS
+   FROM EVENTS_live
    WHERE eventDate = gaUserStartDate
    GROUP BY userId),
      results AS
   (SELECT tzo,
           startTs,
           TIMESTAMPADD(MINUTE, CASE
-                                   WHEN CHAR_LENGTH(TZO)=5 THEN CAST(substring(tzo, 1,1)||'1' AS INTEGER) *-- get positive vs negative tzoffset
+                                   WHEN LEN(TZO)=5 THEN CAST(substring(tzo, 1,1)||'1' AS INTEGER) *-- get positive vs negative tzoffset
 (CAST(substring(tzo, 2,2) AS INTEGER)*60 + cast(substring(tzo, 4,2) AS INTEGER))
                                    ELSE NULL --get tzoffset in minutes
-
                                END, startTs) AS localEventTimestamp,
           CASE
-              WHEN CHAR_LENGTH(TZO)=5 THEN CAST(substring(tzo, 1,1)||'1' AS INTEGER) *-- get positive vs negative tzoffset
+              WHEN LEN(TZO)=5 THEN CAST(substring(tzo, 1,1)||'1' AS INTEGER) *-- get positive vs negative tzoffset
 (CAST(substring(tzo, 2,2) AS INTEGER)*60 + cast(substring(tzo, 4,2) AS INTEGER))
               ELSE NULL --get tzoffset in minutes
-
           END AS minutes
    FROM firstValues)
 SELECT *

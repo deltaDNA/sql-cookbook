@@ -13,8 +13,7 @@ WITH data AS (
     FROM events e 
     WHERE 
         e.eventname IN ( 'newPlayer', 'gameStarted', 'transaction' ) 
-        AND gauserstartdate > current_date - 31)
-        
+        AND gauserstartdate > current_date - 31) 
 SELECT daynumber, 
    COUNT(DISTINCT(CASE WHEN platform LIKE 'IOS%' THEN userid END)) AS "iOS Users", 
    COUNT(DISTINCT(CASE WHEN platform LIKE 'IOS%' 
