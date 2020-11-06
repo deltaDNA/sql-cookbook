@@ -5,7 +5,7 @@ select eventdate,
 round(
     (sum(convertedproductAmount)+sum(adEcpm/1000))/100/count(distinct userid)
 ,4)::float as ARPDAU,
-(sum(convertedproductAmount)+sum(adEcpm)/1000)/100::float as 'revenue for both IAP and SmartAds'
+(sum(convertedproductAmount)+sum(adEcpm)/1000)/100::float as "revenue for both IAP and SmartAds"
 from events
 where eventdate between current_date -30 and current_date
 group by eventdate
