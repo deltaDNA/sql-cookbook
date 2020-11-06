@@ -3,7 +3,7 @@ Common SQL recipes and best practises
 
 ## Purpose
 
-This repository aims to provide a number of best practises and ideas on how to construct queries that provide interesting data in a way that works well with our platform.
+This repository aims to provide a number of best practises and ideas on how to construct queries that provide interesting data in a way that works well with our platform. The queries have all been verified on games implementing the Snowflake data warehouse. Comments within the query will indicate any specific cases where a query cannot be run on the original Vertica warehouse.
 
 Use these queries as you please for educational purposes and to adjust them to suit your specific needs.
 
