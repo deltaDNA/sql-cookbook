@@ -4,13 +4,13 @@ with timeslots as(
 		slice_time
 	from
 		(			
-                select now()-interval '6 hours' as date_range
+                select current_timestamp()-interval '6 hours' as date_range
 		union
-                select now()
+                select current_timestamp()
 		) as ts timeseries slice_time as '1 minutes' over(order by date_range)
 ), data as(
 select userId, sessionId, min(eventTimestamp)startTime, max(eventTimestamp)endTime
-from events where eventTimestamp between now()-interval '6 hours' and now()
+from events where eventTimestamp between current_timestamp()-interval '6 hours' and current_timestamp()
 group by 1,2
 )
 select slice_time, count(distinct userId) from timeslots ts

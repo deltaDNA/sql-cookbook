@@ -15,9 +15,9 @@ WITH items as
    WHERE e.productCategory = 'REAL_CURRENCY'
    ORDER BY itemName)
 SELECT itemName,
-       sum(productAmount) as 'items sold',
+       sum(productAmount) as "items sold",
        round(sum(convertedProductAmount)/100,2.0) as revenue,
        count(*) as sales
 FROM spendings
 GROUP BY itemName
-order by "revenue" desc
+order by revenue desc

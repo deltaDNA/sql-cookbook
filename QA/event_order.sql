@@ -1,16 +1,10 @@
 --In order for session times to be measured accurately and for first and last value metrics to work okay events need to come in in the order they occured in.
 --Since the device time might not be 100% accurate and can automatically be adjusted it could occasionally happen that an event has a timestamp slightly before the next one, this should only happen in up to 1%of the events.
 WITH eventData AS
-  (SELECT userId,
-          eventDate,
-          eventTimestamp,
-          lag(eventTimestamp) over(partition BY userId
-                                   ORDER BY eventId),
-                              EXTRACT(EPOCH
-                                      FROM eventTimestamp - lag(eventTimestamp) over(partition BY userId
-                                                                                     ORDER BY eventId)) AS secondsdiff
-   FROM EVENTS
-   WHERE sessionId IS NOT NULL--exclude ghost events
+(SELECT userId, eventDate, eventTimestamp, lag(eventTimestamp) over(partition BY userId ORDER BY eventId) as lagTime, 
+timediff(s, lagTime, eventTimestamp) AS secondsdiff 
+FROM EVENTS
+WHERE sessionId IS NOT NULL--exclude ghost events
 ),
      aggregates AS
   (SELECT eventDate,

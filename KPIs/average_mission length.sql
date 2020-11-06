@@ -16,6 +16,7 @@ WITH missions AS
   (SELECT userId,
           missionGroup,
           missionID,
+          eventName
           sum(msSinceLastEvent) over (partition BY missionGroup, userId
                                       ORDER BY eventTimestamp)AS MissionCompletedTime
    FROM missions

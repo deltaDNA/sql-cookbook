@@ -14,12 +14,12 @@ WITH DATA AS
    WHERE eventCount>1-- exclude sessions with just one event
 )
 SELECT eventDate,
-       round(avg(sessionDurationMs)/1000,2.0) AS 'Mean session time in seconds',
-       (avg(sessionDurationMs)::varchar||'ms')::interval AS 'Mean session time as interval',
-       round(medianSessionTime/1000, 2.0) AS 'Medain session time in seconds',
-       (medianSessionTime::varchar||'ms')::interval AS 'Median session time as interval',
-       count(DISTINCT userId) AS 'Sample size users',
-       count(DISTINCT sessionId) AS 'Sample size sessions'
+       round(avg(sessionDurationMs)/1000,2.0) AS "Mean session time in seconds",
+       (avg(sessionDurationMs)::varchar||"ms")::interval AS "Mean session time as interval",
+       round(medianSessionTime/1000, 2.0) AS "Medain session time in seconds",
+       (medianSessionTime::varchar||'ms')::interval AS "Median session time as interval",
+       count(DISTINCT userId) AS "Sample size users",
+       count(DISTINCT sessionId) AS "Sample size sessions"
 FROM medianValues
 GROUP BY eventDate,
          medianSessionTime

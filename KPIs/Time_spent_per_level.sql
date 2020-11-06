@@ -9,11 +9,11 @@ WITH DATA AS
           msSinceLastEvent
    FROM EVENTS)
 SELECT coalesce(current_level, 0) AS LEVEL,--replace not known yet with level 0
-        sum(msSinceLastEvent)/1000 AS 'Seconds Spent On Level',
-        count(DISTINCT userId) AS 'Number of users',
-        count(DISTINCT eventDate) AS 'Total days spent',
-        count(DISTINCT eventDate)/count(DISTINCT userId) AS 'average days spent',
-        sum(msSinceLastEvent)/1000/count(DISTINCT userId) AS 'average seconds in game spent on level'
+        sum(msSinceLastEvent)/1000 AS "Seconds Spent On Level",
+        count(DISTINCT userId) AS "Number of users",
+        count(DISTINCT eventDate) AS "Total days spent",
+        count(DISTINCT eventDate)/count(DISTINCT userId) AS "average days spent",
+        sum(msSinceLastEvent)/1000/count(DISTINCT userId) AS "average seconds in game spent on level"
 FROM DATA
 GROUP BY current_level
 ORDER BY current_level

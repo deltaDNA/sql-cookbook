@@ -11,7 +11,7 @@ group by user_id, trunc(event_Date, 'D')
 order by week_commencing
 )
 select (case when first_week=week_commencing or last_week=-14 then week_commencing else week_commencing+interval '7 days' end)::Date as w
-, sum(case when next_week=7  and first_week!=week_commencing then 1 else 0 end) current
+, sum(case when next_week=7  and first_week!=week_commencing then 1 else 0 end) currentWeek
 , sum(case when coalesce(next_week,0)!=7  and first_week!=week_commencing then -1 else 0 end) churned
 , sum(case when first_week=week_commencing then 1 else 0 end) new_players
 , sum(case when last_week = -14 then 1 else 0 end) returning
