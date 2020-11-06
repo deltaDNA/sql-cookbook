@@ -9,7 +9,7 @@ WITH DATA AS
    FROM events
    WHERE missionName IS NOT NULL), nonCompletionData AS
   (SELECT missionName,
-          count(DISTINCT CASE WHEN missionStartedFlag THEN userId ELSE NULL END) AS players,
+          count(DISTINCT CASE WHEN missionStartedFlag = 1 THEN userId ELSE NULL END) AS players,
           count(DISTINCT CASE WHEN missionStartedFlag = 1
                 AND missionCompletedFlag = 1 THEN userId ELSE NULL END) AS completedPlayers,
           count(DISTINCT CASE WHEN missionStartedFlag = 1
