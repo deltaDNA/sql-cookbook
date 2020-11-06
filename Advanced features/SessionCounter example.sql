@@ -14,7 +14,7 @@ WITH DATA AS
 SELECT eventName,
        count(*) AS events,
        count(DISTINCT userId) AS users,
-       round(count(*) / count(DISTINCT userId),2.0) AS 'ev per user in first session'
+       round(count(*) / count(DISTINCT userId),2.0) AS "ev per user in first session"
 FROM DATA
 WHERE sessionCounter = 0
 GROUP BY eventName
