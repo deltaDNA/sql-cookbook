@@ -8,7 +8,7 @@ with firstValues as (
 	group by userId, eventTimestamp)
 , results as (
 	select userID
-		, TIMESTAMPADD(minute, case when CHAR_LENGTH(TZO)=5 then CAST(substring(tzo, 1,1)||'1' as INTEGER) *-- get positive vs negative tzoffset
+		, TIMESTAMPADD(minute, case when LEN(TZO)=5 then CAST(substring(tzo, 1,1)||'1' as INTEGER) *-- get positive vs negative tzoffset
 			(CAST(substring(tzo, 2,2) as INTEGER)*60 + cast(substring(tzo, 4,2) as INTEGER)) else null --get tzoffset in minutes
 			end	,startTs )as localEventTimestamp
 	from firstValues)
