@@ -8,7 +8,7 @@ select
 	sum(msSinceLastEvent) as sessionDurationMs,
 	count(*)as eventCount
 from
-	EVENTS_live
+	EVENTS
 group by
 	sessionId,
 	userId) ,

@@ -1,11 +1,9 @@
 --In this query we create a time slice by extrapolating the days between two fixed dates
 --this is then joined onto the user activity of x days in the past. And next we count the unique number of users .
-WITH dates AS
-  (SELECT DAY::date
-   FROM
-     (SELECT (CURRENT_DATE-30)::TIMESTAMP AS date_range
-      UNION SELECT CURRENT_DATE::TIMESTAMP)AS ts timeseries DAY AS '1 days' over (
-                                                                                  ORDER BY date_range)),
+WITH dates AS (
+SELECT DISTINCT EVENTDATE AS DAY
+FROM events
+WHERE EVENTDATE BETWEEN current_date - 30 AND current_date),
      activity AS
   (SELECT DISTINCT event_date,
                    user_id

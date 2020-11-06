@@ -9,7 +9,7 @@ WITH relevant_data AS (
 	      eventName,
       lead(eventName = 'gameStarted') OVER (PARTITION BY userId ORDER BY eventTimestamp) AS nextEventIsTestEvent,
       lead(eventTimestamp) OVER (PARTITION BY userId ORDER BY eventTimestamp) AS nextTimestamp
-    FROM events_live
+    FROM events
     WHERE ((eventName = 'engageResponse' and responseEngagementName = 'A/B test campaign'
 		              )
 			           OR (eventName = 'gameStarted'

@@ -5,7 +5,7 @@ WITH firstValues AS
   (SELECT userId,
           min(eventTimestamp)startTs,
           min(timezoneOffset)tzo
-   FROM EVENTS_live
+   FROM EVENTS
    WHERE eventDate = gaUserStartDate
    GROUP BY userId),
      results AS

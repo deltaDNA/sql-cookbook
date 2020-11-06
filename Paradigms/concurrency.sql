@@ -1,13 +1,7 @@
---get the number of users who were in a session at a given timeslot:
 with timeslots as(
-	select
-		slice_time
-	from
-		(			
-                select current_timestamp()-interval '6 hours' as date_range
-		union
-                select current_timestamp()
-		) as ts timeseries slice_time as '1 minutes' over(order by date_range)
+	SELECT DISTINCT TIME_SLICE(EVENTTIMESTAMP, 1, 'MINUTE') AS slice_time
+FROM events
+WHERE EVENTTIMESTAMP BETWEEN CURRENT_TIMESTAMP - INTERVAL '6 hour' AND CURRENT_TIMESTAMP
 ), data as(
 select userId, sessionId, min(eventTimestamp)startTime, max(eventTimestamp)endTime
 from events where eventTimestamp between current_timestamp()-interval '6 hours' and current_timestamp()

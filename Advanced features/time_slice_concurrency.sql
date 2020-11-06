@@ -2,10 +2,13 @@
 --create a dataset with timestamps between two points at regular intervals
 --join sessions on these intervals if they start before and end after this point in time.
 --Count the number of sessions on these intervals.
-with timeslots as (select slice_time
-	from (select (CURRENT_DATE-10)::timestamp as date_range union select now())as ts
-	timeseries slice_time as '10 minutes' over (order by date_range)),
-sessions as (select userid, sessionid, min(eventTimestamp) as sessionStart, max(eventTimestamp) as sessionEnd
+with timeslots as (
+SELECT DISTINCT TIME_SLICE(EVENTTIMESTAMP, 10, 'MINUTE') AS slice_time
+FROM events
+WHERE EVENTTIMESTAMP BETWEEN CURRENT_TIMESTAMP - INTERVAL '10 day' AND CURRENT_TIMESTAMP
+	),
+sessions as (
+select userid, sessionid, min(eventTimestamp) as sessionStart, max(eventTimestamp) as sessionEnd
 	FROM  events
 	WHERE eventTimestamp between  (CURRENT_DATE-10) and  now()
 	and sessionId is not null

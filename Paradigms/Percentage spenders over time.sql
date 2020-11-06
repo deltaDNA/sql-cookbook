@@ -2,11 +2,10 @@
 -- The first CTE pulls the date range
 -- The second CTE pulls player start dates and first payment dates
 -- The final part of the query pulls it all togteher
-WITH dates AS
-  ( SELECT DAY::date
-     FROM
-       (SELECT (CURRENT_DATE-30)::TIMESTAMP AS date_range
-       UNION SELECT CURRENT_DATE::TIMESTAMP)AS ts timeseries DAY AS '1 days' over (ORDER BY date_range))
+WITH dates AS (
+SELECT DISTINCT EVENTDATE AS DAY
+FROM events
+WHERE EVENTDATE BETWEEN current_date - 30 AND current_date),
 , players AS 
   ( SELECT user_id
      , MIN(event_date) as startDate
