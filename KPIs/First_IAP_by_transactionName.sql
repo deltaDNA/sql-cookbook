@@ -8,7 +8,7 @@ where convertedProductAmount>0 and revenueValidated in (0,1)
 )
 select
 	transactionName,
-	count(*) as 'IAP count',
+	count(*) as "IAP count",
 	sum(convertedproductAmount)/100::float as Revenue
 from transactions
 where transactionNumber = 1
